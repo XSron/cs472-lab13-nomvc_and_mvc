@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="model.ContactForm"%>
 <html>
 	<head>
 		<title>Contact Form</title>
@@ -39,35 +40,39 @@
 	 <section>
 		 <div class="container">
 		  	<%= request.getAttribute("error") == null? "": request.getAttribute("error") %>
+		  	<%
+		  		ContactForm contact; 
+		  		try {
+		  			contact = (ContactForm)request.getAttribute("contact");
+		  			if(contact == null)
+		  				contact = new ContactForm();
+		  		}catch(Exception ex){
+		  			contact = new ContactForm();
+		  		}
+		  	%>
 			 <form action="process-contact-form" method="POST">
 				 <div class="row">
 					 <div class="col-md-12">
 						 <h3>Contact Form</h3>
 						 <label for="name">* Name</label>
-						 <input type="text" class="form-control" value="<%= request.getAttribute("name") == null? "": request.getAttribute("name") %>"  name="fullname" aria-describedby="nameHelp" placeholder="Enter your Name">
+						 <input type="text" class="form-control" value="<%= contact.getName() == null? "": contact.getName() %>"  name="fullname" aria-describedby="nameHelp" placeholder="Enter your Name">
 						 <small id="fullNameHelp" class="form-text text-muted">Enter your fullname</small>
 					 </div>
 				 </div>
 				 <div class="row">
 					 <div class="col-md-6">
 						 <label for="gender">* Gender</label><br/>
-						 <%
-						 	Object gender = request.getAttribute("gender");
-						 %>
-						 <label><input type="radio" value="Male" name="gender" <%= gender!=null && gender.equals("Male")? "checked": "" %>>Male</label>
-						 <label><input type="radio" value="Male" name="gender" <%= gender!=null && gender.equals("Female")? "checked": "" %>>Female</label>
+						 <label><input type="radio" value="Male" name="gender" <%= contact.getGender()!=null && contact.getGender().equals("Male")? "checked": "" %>>Male</label>
+						 <label><input type="radio" value="Male" name="gender" <%= contact.getGender()!=null && contact.getGender().equals("Female")? "checked": "" %>>Female</label>
 					 </div>
 				 </div>
 				 <div class="row">
 					 <div class="col-md-12">
 						 <label for="category">* Category</label><br/>
 						 <select id="category" name="category" class="form-control">
-						 	<%
-						 		Object category = request.getAttribute("category");
-						 	%>
-							 <option <%= category!=null && category.equals("Feedback")? "selected": "" %>>Feedback</option>
-							 <option <%= category!=null && category.equals("Inquiry")? "selected": "" %>>Inquiry</option>
-							 <option <%= category!=null && category.equals("Complaint")? "selected": "" %>>Complaint</option>
+							 <option <%= contact.getCategory()!=null && contact.getCategory().equals("Feedback")? "selected": "" %>>Feedback</option>
+							 <option <%= contact.getCategory()!=null && contact.getCategory().equals("Inquiry")? "selected": "" %>>Inquiry</option>
+							 <option <%= contact.getCategory()!=null && contact.getCategory().equals("Complaint")? "selected": "" %>>Complaint</option>
 						 </select>
 					 </div>
 				 </div>
@@ -75,7 +80,7 @@
 					 <div class="col-md-12">
 						 <label for="message">* Message</label><br/>
 						 <textarea class="form-control" row="10" name="message"> 
-						 	<%= request.getAttribute("message") == null? "": request.getAttribute("message") %> 
+						 	<%= contact.getMessage() == null? "": contact.getMessage() %> 
 						 </textarea>
 					 </div>
 				 </div>

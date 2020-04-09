@@ -1,13 +1,13 @@
 package controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.ContactForm;
 
 @WebServlet("/process-contact-form")
 public class ProcessContactFormController extends HttpServlet {
@@ -35,14 +35,10 @@ public class ProcessContactFormController extends HttpServlet {
 			err += "<p style=\"color:red\">message is empty</p>";
 		
 		if(err.isBlank()) {
-			String queryString = "name="+ URLEncoder.encode(name, "UTF-8") +"&gender="+ gender +"&category="+ category +"&message="+ URLEncoder.encode(message, "UTF-8") +"";
-			response.sendRedirect("../lab12-mvc/Thankyou?" + queryString);
+			response.sendRedirect("../lab12-mvc/Thankyou?" + new ContactForm(name, gender, category, message).toQueryString());
 		}else {
 			request.setAttribute("error", err);
-			request.setAttribute("name", name);
-			request.setAttribute("gender", gender);
-			request.setAttribute("category", category);
-			request.setAttribute("message", message);
+			request.setAttribute("contact", new ContactForm(name, gender, category, message));
 			request.getRequestDispatcher("/contactform").forward(request, response);
 		}
 	}

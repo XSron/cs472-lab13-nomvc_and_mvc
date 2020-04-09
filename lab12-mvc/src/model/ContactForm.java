@@ -1,10 +1,14 @@
 package model;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class ContactForm {
 	private String name;
 	private String gender;
 	private String category;
 	private String message;
+	public ContactForm() {}
 	public ContactForm(String name, String gender, String category, String message) {
 		super();
 		this.name = name;
@@ -35,5 +39,8 @@ public class ContactForm {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public String toQueryString() throws UnsupportedEncodingException {
+		return "name="+ URLEncoder.encode(name, "UTF-8") +"&gender="+ gender +"&category="+ category +"&message="+ URLEncoder.encode(message, "UTF-8");
 	}
 }
